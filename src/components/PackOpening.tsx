@@ -46,7 +46,7 @@ export function PackOpening({ pack, onDone, onInspect }: Props) {
     const t = window.setTimeout(() => {
       setFromTear(true)
       setPhase('revealing')
-    }, 600)
+    }, 730)
     return () => window.clearTimeout(t)
   }, [phase])
 
@@ -73,7 +73,7 @@ export function PackOpening({ pack, onDone, onInspect }: Props) {
       setIdx((i) => i + 1)
       setDrag(0)
       setExiting(false)
-    }, 220)
+    }, 200)
   }
 
   // 카드 탭 / 스와이프
@@ -151,9 +151,9 @@ export function PackOpening({ pack, onDone, onInspect }: Props) {
   if (phase === 'revealing') {
     const pulled = cards[idx]
     const style: React.CSSProperties = exiting
-      ? { transform: 'translateX(-115%)', opacity: 0 }
+      ? { transform: 'scale(0.94)', opacity: 0 }
       : drag
-        ? { transform: `translateX(${drag}px)` }
+        ? { transform: `translateX(${drag}px) rotate(${drag * 0.02}deg)` }
         : {}
 
     return (
@@ -171,9 +171,6 @@ export function PackOpening({ pack, onDone, onInspect }: Props) {
         </div>
 
         <div className="deck">
-          {/* 뒤에 남은 카드 더미 */}
-          {!isLast && <div className="deck__stack" aria-hidden />}
-
           <div
             key={idx}
             className={
