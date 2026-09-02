@@ -12,6 +12,9 @@
   --gold-2: #c9a13c;
   --gold-3: #8a6d24;
 
+  /* 개봉 화면 카드/봉투 폭 (봉투·공개 카드가 동일하게 사용) */
+  --open-card-w: min(90vw, 360px);
+
   font-family: system-ui, -apple-system, 'Segoe UI', 'Malgun Gothic',
     'Apple SD Gothic Neo', sans-serif;
   color-scheme: light;
@@ -246,7 +249,7 @@ code {
 /* ── 카드팩 뜯기 (봉투에서 카드 나오는 연출) ── */
 .tear {
   position: relative;
-  width: min(74vw, 300px);
+  width: var(--open-card-w);
   aspect-ratio: 63 / 88;
   /* 아래쪽 1cm 는 봉투가 카드보다 길어서 튀어나온 부분 (안내 문구가 안 겹치도록) */
   margin: 34px auto calc(1cm + 16px);
@@ -370,7 +373,7 @@ code {
 
 .deck {
   position: relative;
-  width: min(74vw, 300px);
+  width: var(--open-card-w);
   margin: 0 auto;
   touch-action: pan-y;
 }
