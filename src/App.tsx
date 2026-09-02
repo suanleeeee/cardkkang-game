@@ -2,26 +2,53 @@ import { useState } from 'react'
 import { PackShelf } from './components/PackShelf'
 import { PackOpening } from './components/PackOpening'
 import { Collection } from './components/Collection'
+import { CardDetail } from './components/CardDetail'
 import { useCollection } from './state/collection'
-import type { PackDef } from './game/types'
+import type { CardDef, PackDef } from './game/types'
 
 type Tab = 'shop' | 'collection'
 
 export default function App() {
   const [tab, setTab] = useState<Tab>('shop')
   const [opening, setOpening] = useState<PackDef | null>(null)
-  const { packsOpened, totalOwned, uniqueOwned, reset } = useCollection()
+  const [detail, setDetail] = useState<CardDef | null>(null)
+  const { packsOpened, totalOwned, uniqueOwned } = useCollection()
 
   return (
-    <div className="app">
-      <header className="app__header">
-        <h1 className="app__title">카드깡 게임</h1>
-        <nav className="app__tabs">
+    <div className="phone">
+      <header className="topbar">
+        <h1 className="topbar__title">카드깡</h1>
+        {!opening && (
+          <div className="topbar__stats">
+            <span>팩 {packsOpened}</span>
+            <span>카드 {totalOwned}</span>
+            <span>도감 {uniqueOwned}</span>
+          </div>
+        )}
+      </header>
+
+      <main className="screen">
+        {opening ? (
+          <PackOpening
+            pack={opening}
+            onDone={() => setOpening(null)}
+            onInspect={setDetail}
+          />
+        ) : tab === 'shop' ? (
+          <PackShelf onOpen={setOpening} />
+        ) : (
+          <Collection onInspect={setDetail} />
+        )}
+      </main>
+
+      {!opening && (
+        <nav className="tabbar">
           <button
             className={tab === 'shop' ? 'is-active' : ''}
             onClick={() => setTab('shop')}
             type="button"
           >
+            <span className="tabbar__icon">🎴</span>
             팩 열기
           </button>
           <button
@@ -29,40 +56,15 @@ export default function App() {
             onClick={() => setTab('collection')}
             type="button"
           >
+            <span className="tabbar__icon">📖</span>
             도감
           </button>
         </nav>
-      </header>
-
-      {!opening && (
-        <div className="app__stats">
-          <span>개봉한 팩 {packsOpened}</span>
-          <span>보유 카드 {totalOwned}</span>
-          <span>도감 {uniqueOwned}</span>
-        </div>
       )}
 
-      <main className="app__main">
-        {opening ? (
-          <PackOpening pack={opening} onDone={() => setOpening(null)} />
-        ) : tab === 'shop' ? (
-          <PackShelf onOpen={setOpening} />
-        ) : (
-          <Collection />
-        )}
-      </main>
-
-      <footer className="app__footer">
-        <button
-          className="btn btn--ghost"
-          onClick={() => {
-            if (confirm('컬렉션을 모두 초기화할까요?')) reset()
-          }}
-          type="button"
-        >
-          컬렉션 초기화
-        </button>
-      </footer>
+      {detail && (
+        <CardDetail card={detail} onClose={() => setDetail(null)} />
+      )}
     </div>
   )
 }

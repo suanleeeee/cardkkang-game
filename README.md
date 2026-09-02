@@ -1,8 +1,10 @@
 # 카드깡 게임
 
-카드팩을 뜯어 카드를 모으는 웹 게임입니다. (포켓몬 카드 게임 앱류의 팩 오프닝 시뮬레이터)
+카드팩을 뜯어 카드를 모으는 **스마트폰 웹앱**입니다. (포켓몬 카드 게임 앱류의 팩 오프닝 시뮬레이터)
 
 - **스택**: React 18 + Vite + TypeScript
+- **UI**: 모바일 우선(최대 폭 480px), 라이트 모드, 하단 탭바
+- **카드**: 포켓몬 카드 스타일 프레임 (HP·속성·특성·기술·약점/저항/후퇴·일러스트·번호)
 - **저장**: 브라우저 `localStorage` (컬렉션/개봉 횟수)
 - **카드/팩 데이터**: `src/data/` 에서 코드로 추가 (서버 불필요)
 
@@ -27,6 +29,7 @@ src/
   game/
     types.ts       카드/팩 도메인 타입
     rarity.ts      등급 라벨·색상, 가중치 추첨
+    energy.ts      속성(에너지) 타입 색상·라벨·아이콘
     openPack.ts    팩 개봉 로직
   data/
     cards.ts       카드 정의 (지금은 데모 카드)
@@ -36,8 +39,10 @@ src/
   components/
     PackShelf.tsx    팩 목록
     PackOpening.tsx  개봉 연출(뜯기 → 뒤집기 → 결과)
-    Collection.tsx   도감
-    CardView.tsx     카드 한 장 렌더
+    Collection.tsx   도감 (등급별 그룹, 미획득 실루엣)
+    CardDetail.tsx   카드 확대 상세 시트
+    CardView.tsx     포켓몬 스타일 카드 렌더 (cqw 단위로 폭에 맞춰 스케일)
+    EnergyIcon.tsx   에너지 아이콘
 ```
 
 ## 카드·팩 추가하기

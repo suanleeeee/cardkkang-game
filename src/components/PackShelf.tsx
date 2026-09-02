@@ -11,24 +11,26 @@ export function PackShelf({ onOpen }: Props) {
       {PACKS.map((pack) => (
         <button
           key={pack.id}
-          className="pack"
+          className="packcard"
           onClick={() => onOpen(pack)}
           type="button"
         >
-          <div className="pack__art">
+          <div className="packcard__art">
             {pack.image ? (
               <img src={pack.image} alt={pack.name} />
             ) : (
-              <div className="pack__art-placeholder" aria-hidden>
-                🃏
-              </div>
+              <span className="packcard__art-mark" aria-hidden>
+                ✦
+              </span>
             )}
           </div>
-          <div className="pack__name">{pack.name}</div>
-          {pack.description && (
-            <div className="pack__desc">{pack.description}</div>
-          )}
-          <div className="pack__cta">{pack.cardsPerPack}장 · 열기</div>
+          <div className="packcard__info">
+            <div className="packcard__name">{pack.name}</div>
+            {pack.description && (
+              <div className="packcard__desc">{pack.description}</div>
+            )}
+            <div className="packcard__cta">{pack.cardsPerPack}장 개봉 →</div>
+          </div>
         </button>
       ))}
     </div>
