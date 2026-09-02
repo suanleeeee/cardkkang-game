@@ -229,6 +229,14 @@ code {
   padding-top: 8px;
 }
 
+/* 뜯는 동안: 내려가는 봉투가 화면 밖에서 잘리도록(스크롤 늘어남 방지),
+   위로 솟는 카드는 넉넉히 보이도록 clip-margin 확보 */
+.opening--tearing {
+  overflow: clip;
+  overflow-clip-margin: 220px;
+  min-height: calc(100dvh - 120px);
+}
+
 .opening__actions {
   margin-top: 18px;
   display: flex;
@@ -240,7 +248,8 @@ code {
   position: relative;
   width: min(74vw, 300px);
   aspect-ratio: 63 / 88;
-  margin: 34px auto 0;
+  /* 아래쪽 1cm 는 봉투가 카드보다 길어서 튀어나온 부분 (안내 문구가 안 겹치도록) */
+  margin: 34px auto calc(1cm + 16px);
 }
 
 .tear__pack,
@@ -261,6 +270,8 @@ code {
   z-index: 1;
   padding: 0;
   cursor: pointer;
+  /* 카드보다 총 1cm 더 김 (아래쪽으로 연장 — 카드가 꽂힌 주머니) */
+  bottom: -1cm;
 }
 
 .tear__pack::after {
@@ -286,11 +297,11 @@ code {
 }
 
 .tear--active .tear__card {
-  animation: cardOut 0.8s cubic-bezier(0.22, 0.8, 0.3, 1) forwards;
+  animation: cardOut 0.72s cubic-bezier(0.22, 0.8, 0.3, 1) forwards;
 }
 
 .tear--active .tear__pack {
-  animation: packDrop 0.6s ease-in forwards;
+  animation: packDrop 0.7s cubic-bezier(0.5, 0, 0.85, 0.4) forwards;
   pointer-events: none;
 }
 
@@ -307,19 +318,17 @@ code {
   }
 }
 
-/* 봉투: 원래 위치에서 아래로 내려가며 사라짐 */
+/* 봉투: 원래 위치에서 화면 아래로 완전히 빠져나갈 때까지 슬라이드
+   (화면 안에서는 페이드아웃하지 않음) */
 @keyframes packDrop {
   0% {
     transform: translateY(0);
-    opacity: 1;
   }
-  22% {
+  15% {
     transform: translateY(0);
-    opacity: 1;
   }
   100% {
-    transform: translateY(72%) scale(0.94);
-    opacity: 0;
+    transform: translateY(195%);
   }
 }
 

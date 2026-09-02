@@ -46,7 +46,7 @@ export function PackOpening({ pack, onDone, onInspect }: Props) {
     const t = window.setTimeout(() => {
       setFromTear(true)
       setPhase('revealing')
-    }, 800)
+    }, 740)
     return () => window.clearTimeout(t)
   }, [phase])
 
@@ -128,7 +128,7 @@ export function PackOpening({ pack, onDone, onInspect }: Props) {
   if (phase === 'sealed' || phase === 'tearing') {
     const tearing = phase === 'tearing'
     return (
-      <div className="opening">
+      <div className={'opening' + (tearing ? ' opening--tearing' : '')}>
         <div className={'tear' + (tearing ? ' tear--active' : '')}>
           <div className="tear__card" aria-hidden>
             <span>?</span>
