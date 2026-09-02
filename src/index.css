@@ -261,17 +261,28 @@ code {
   align-items: center;
   justify-content: center;
   color: rgba(255, 255, 255, 0.92);
-  background: linear-gradient(150deg, var(--gold-1), var(--gold-2) 55%, var(--gold-3));
   border: 4px solid #fff;
-  box-shadow: 0 16px 34px rgba(201, 161, 60, 0.4);
 }
 
+/* 봉투 안에 든 카드 — 정지 상태. 봉투가 내려가면서 드러난다.
+   (공개 화면의 뒷면 .flipper__back 과 동일한 톤이라 전환이 매끄럽다) */
+.tear__card {
+  z-index: 0;
+  font-size: 2.4rem;
+  background: linear-gradient(150deg, var(--gold-1), var(--gold-2) 55%, var(--gold-3));
+  box-shadow: 0 10px 24px rgba(201, 161, 60, 0.35);
+}
+
+/* 봉투 — 카드보다 세로로 1cm 김(아래로 연장), 약간 어둡고 그림자가 강함 */
 .tear__pack {
   z-index: 1;
   padding: 0;
   cursor: pointer;
-  /* 카드보다 총 1cm 더 김 (아래쪽으로 연장 — 카드가 꽂힌 주머니) */
   bottom: -1cm;
+  background: linear-gradient(150deg, #e6c469, #c6a044 50%, #a5822d);
+  box-shadow:
+    0 20px 28px -8px rgba(0, 0, 0, 0.38),
+    0 6px 14px rgba(0, 0, 0, 0.2);
 }
 
 .tear__pack::after {
@@ -279,7 +290,7 @@ code {
   position: absolute;
   inset: 0;
   border-radius: 12px;
-  background: linear-gradient(115deg, transparent 42%, rgba(255, 255, 255, 0.55) 50%, transparent 58%);
+  background: linear-gradient(115deg, transparent 44%, rgba(255, 255, 255, 0.45) 50%, transparent 56%);
 }
 
 .tear__pack:active {
@@ -288,47 +299,39 @@ code {
 
 .tear__pack-mark {
   font-size: 3.4rem;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.28);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
-.tear__card {
-  z-index: 0;
-  font-size: 2.4rem;
-}
-
-.tear--active .tear__card {
-  animation: cardOut 0.72s cubic-bezier(0.22, 0.8, 0.3, 1) forwards;
-}
-
+/* 봉투: 제자리에서 아래로 미끄러져 화면 밖으로 완전히 빠져나감
+   (화면 안에서는 페이드아웃하지 않음) */
 .tear--active .tear__pack {
-  animation: packDrop 0.7s cubic-bezier(0.5, 0, 0.85, 0.4) forwards;
+  animation: packDrop 0.6s cubic-bezier(0.4, 0.05, 0.85, 0.35) forwards;
   pointer-events: none;
 }
 
-/* 카드: 원위치 → 위로 올라갔다 → 다시 원위치 */
-@keyframes cardOut {
-  0% {
-    transform: translateY(0) scale(1);
+@keyframes packDrop {
+  from {
+    transform: translateY(0);
   }
-  45% {
-    transform: translateY(-42%) scale(1.03);
-  }
-  100% {
-    transform: translateY(0) scale(1);
+  to {
+    transform: translateY(200%);
   }
 }
 
-/* 봉투: 원래 위치에서 화면 아래로 완전히 빠져나갈 때까지 슬라이드
-   (화면 안에서는 페이드아웃하지 않음) */
-@keyframes packDrop {
+/* 카드는 봉투가 벗겨지면서 살짝 안착 */
+.tear--active .tear__card {
+  animation: cardSettle 0.45s ease-out 0.12s both;
+}
+
+@keyframes cardSettle {
   0% {
-    transform: translateY(0);
+    transform: scale(0.98);
   }
-  15% {
-    transform: translateY(0);
+  60% {
+    transform: scale(1.02);
   }
   100% {
-    transform: translateY(195%);
+    transform: scale(1);
   }
 }
 

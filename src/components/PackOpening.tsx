@@ -46,7 +46,7 @@ export function PackOpening({ pack, onDone, onInspect }: Props) {
     const t = window.setTimeout(() => {
       setFromTear(true)
       setPhase('revealing')
-    }, 740)
+    }, 600)
     return () => window.clearTimeout(t)
   }, [phase])
 
