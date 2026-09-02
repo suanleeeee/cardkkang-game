@@ -235,45 +235,86 @@ code {
   justify-content: center;
 }
 
-.sealed {
-  margin: 48px auto 0;
-  display: flex;
-  justify-content: center;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  cursor: pointer;
+/* ── 카드팩 뜯기 (봉투에서 카드 나오는 연출) ── */
+.tear {
+  position: relative;
+  width: min(74vw, 300px);
+  aspect-ratio: 63 / 88;
+  margin: 34px auto 0;
 }
 
-.sealed__pack {
-  position: relative;
-  width: 208px;
-  aspect-ratio: 63 / 88;
-  border-radius: 18px;
+.tear__pack,
+.tear__card {
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: rgba(255, 255, 255, 0.92);
   background: linear-gradient(150deg, var(--gold-1), var(--gold-2) 55%, var(--gold-3));
   border: 4px solid #fff;
-  box-shadow: 0 16px 36px rgba(201, 161, 60, 0.42);
+  box-shadow: 0 16px 34px rgba(201, 161, 60, 0.4);
 }
 
-.sealed__pack::after {
+.tear__pack {
+  z-index: 1;
+  padding: 0;
+  cursor: pointer;
+}
+
+.tear__pack::after {
   content: '';
   position: absolute;
   inset: 0;
-  border-radius: 14px;
+  border-radius: 12px;
   background: linear-gradient(115deg, transparent 42%, rgba(255, 255, 255, 0.55) 50%, transparent 58%);
 }
 
-.sealed:active .sealed__pack {
+.tear__pack:active {
   transform: scale(0.97);
 }
 
-.sealed__pack-mark {
-  font-size: 3.6rem;
+.tear__pack-mark {
+  font-size: 3.4rem;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.28);
+}
+
+.tear__card {
+  z-index: 0;
+  font-size: 2.4rem;
+}
+
+.tear--active .tear__card {
+  animation: cardOut 0.78s cubic-bezier(0.22, 0.8, 0.3, 1) forwards;
+}
+
+.tear--active .tear__pack {
+  animation: packDrop 0.5s ease forwards;
+  pointer-events: none;
+}
+
+@keyframes cardOut {
+  0% {
+    transform: translateY(18%) scale(0.94);
+  }
+  48% {
+    transform: translateY(-52%) scale(1.02);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes packDrop {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(26px) scale(0.9);
+    opacity: 0;
+  }
 }
 
 /* ── 카드 그리드 & 플립 ────────────────── */
@@ -348,6 +389,20 @@ code {
   }
   to {
     transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* 봉투에서 나온 첫 카드가 자연스럽게 자리잡도록 페이드만 */
+.deck__card.is-appearing {
+  animation: deckAppear 0.28s ease-out;
+}
+
+@keyframes deckAppear {
+  from {
+    opacity: 0;
+  }
+  to {
     opacity: 1;
   }
 }

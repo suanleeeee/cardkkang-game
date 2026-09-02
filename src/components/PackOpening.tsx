@@ -10,7 +10,7 @@ interface Props {
   onInspect: (card: CardDef) => void
 }
 
-type Phase = 'sealed' | 'revealing' | 'summary'
+type Phase = 'sealed' | 'tearing' | 'revealing' | 'summary'
 
 export function PackOpening({ pack, onDone, onInspect }: Props) {
   const { counts, addPull } = useCollection()
@@ -27,6 +27,7 @@ export function PackOpening({ pack, onDone, onInspect }: Props) {
   const [revealed, setRevealed] = useState<boolean[]>(() => cards.map(() => false))
   const [drag, setDrag] = useState(0)
   const [exiting, setExiting] = useState(false)
+  const [fromTear, setFromTear] = useState(false)
   const startX = useRef<number | null>(null)
   const moved = useRef(false)
 
@@ -38,6 +39,16 @@ export function PackOpening({ pack, onDone, onInspect }: Props) {
       addPull(cards)
     }
   }, [cards, addPull])
+
+  // 봉투에서 카드가 나오는 연출 → 끝나면 공개 화면으로
+  useEffect(() => {
+    if (phase !== 'tearing') return
+    const t = window.setTimeout(() => {
+      setFromTear(true)
+      setPhase('revealing')
+    }, 760)
+    return () => window.clearTimeout(t)
+  }, [phase])
 
   const isLast = idx >= cards.length - 1
   const curRevealed = revealed[idx] ?? false
@@ -114,19 +125,25 @@ export function PackOpening({ pack, onDone, onInspect }: Props) {
     )
   }
 
-  if (phase === 'sealed') {
+  if (phase === 'sealed' || phase === 'tearing') {
+    const tearing = phase === 'tearing'
     return (
       <div className="opening">
-        <button
-          className="sealed"
-          onClick={() => setPhase('revealing')}
-          type="button"
-          aria-label="카드팩 뜯기"
-        >
-          <div className="sealed__pack" aria-hidden>
-            <span className="sealed__pack-mark">✦</span>
+        <div className={'tear' + (tearing ? ' tear--active' : '')}>
+          <div className="tear__card" aria-hidden>
+            <span>?</span>
           </div>
-        </button>
+          <button
+            className="tear__pack"
+            onClick={() => !tearing && setPhase('tearing')}
+            type="button"
+            aria-label="카드팩 뜯기"
+            disabled={tearing}
+          >
+            <span className="tear__pack-mark">✦</span>
+          </button>
+        </div>
+        {!tearing && <div className="deck__hint">탭하여 뜯기</div>}
       </div>
     )
   }
@@ -161,7 +178,11 @@ export function PackOpening({ pack, onDone, onInspect }: Props) {
             key={idx}
             className={
               'deck__card' +
-              (exiting ? ' is-exiting' : ' is-entering')
+              (exiting
+                ? ' is-exiting'
+                : fromTear && idx === 0
+                  ? ' is-appearing'
+                  : ' is-entering')
             }
             style={style}
             onPointerDown={onPointerDown}
