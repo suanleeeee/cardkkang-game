@@ -1,20 +1,10 @@
 // 카드깡 게임 도메인 타입 정의
 // 카드/팩 데이터는 src/data/ 에서 이 타입에 맞춰 추가합니다.
 
-export type Rarity =
-  | 'common'
-  | 'uncommon'
-  | 'rare'
-  | 'epic'
-  | 'legendary'
+/** 카드 등급 — 일반(normal) / 히든(hidden) 2단계 */
+export type Rarity = 'normal' | 'hidden'
 
-export const RARITY_ORDER: Rarity[] = [
-  'common',
-  'uncommon',
-  'rare',
-  'epic',
-  'legendary',
-]
+export const RARITY_ORDER: Rarity[] = ['normal', 'hidden']
 
 /** 에너지(속성) 타입 — 카드 우상단 아이콘, 기술 코스트, 약점/저항에 사용 */
 export type EnergyType =

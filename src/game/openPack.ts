@@ -25,14 +25,7 @@ function pullOne(
   rng: () => number,
 ): CardDef {
   const wanted = pickWeighted(slotOdds, rng)
-  const fallbackOrder: Rarity[] = [
-    wanted,
-    'legendary',
-    'epic',
-    'rare',
-    'uncommon',
-    'common',
-  ]
+  const fallbackOrder: Rarity[] = [wanted, 'hidden', 'normal']
   for (const rarity of fallbackOrder) {
     const matches = pool.filter((c) => c.rarity === rarity)
     if (matches.length > 0) return randomOf(matches, rng)

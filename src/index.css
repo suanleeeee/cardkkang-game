@@ -42,6 +42,8 @@ body {
   flex-direction: column;
   background: var(--bg);
   box-shadow: 0 0 40px rgba(0, 0, 0, 0.06);
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .topbar {
@@ -294,6 +296,12 @@ code {
   font-size: 1.05rem;
 }
 
+.sealed__sub {
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-top: -4px;
+}
+
 .sealed__cta {
   color: var(--accent);
   font-weight: 700;
@@ -305,6 +313,66 @@ code {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 12px;
+}
+
+/* ── 한 장씩 넘기며 공개 ───────────────── */
+.deck__progress {
+  display: flex;
+  justify-content: center;
+  gap: 7px;
+  margin: 4px 0 18px;
+}
+
+.deck__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--border);
+  transition: background 0.2s, transform 0.2s;
+}
+
+.deck__dot.is-done {
+  background: var(--accent);
+  opacity: 0.5;
+}
+
+.deck__dot.is-current {
+  background: var(--accent);
+  transform: scale(1.5);
+}
+
+.deck {
+  position: relative;
+  width: min(74vw, 300px);
+  margin: 0 auto;
+  touch-action: pan-y;
+}
+
+.deck__stack {
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  background: linear-gradient(150deg, var(--gold-1), var(--gold-2) 55%, var(--gold-3));
+  border: 3px solid #fff;
+  transform: rotate(3deg) translate(6px, 6px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+.deck__card {
+  position: relative;
+  transition: transform 0.24s ease, opacity 0.24s ease;
+  cursor: grab;
+  touch-action: pan-y;
+}
+
+.deck__card.is-exiting {
+  pointer-events: none;
+}
+
+.deck__hint {
+  margin-top: 14px;
+  font-size: 0.82rem;
+  color: var(--muted);
 }
 
 .flipper {
@@ -374,10 +442,8 @@ code {
   cursor: pointer;
 }
 
-.summary__item.rarity-uncommon { border-left-color: #3fa35f; }
-.summary__item.rarity-rare { border-left-color: #3d7fd6; }
-.summary__item.rarity-epic { border-left-color: #9350b0; }
-.summary__item.rarity-legendary { border-left-color: var(--gold-2); }
+.summary__item.rarity-normal { border-left-color: var(--gold-2); }
+.summary__item.rarity-hidden { border-left-color: #9b5de5; }
 
 .summary__tag {
   color: var(--muted);
@@ -491,22 +557,32 @@ code {
   pointer-events: none;
 }
 
-.pcard--epic .pcard__frame {
-  background: linear-gradient(150deg, #ffe7a0, #caa64a 40%, #9a7bd0 70%, #ffe7a0);
+/* 히든 카드 — 무지개 홀로 프레임 */
+.pcard--hidden .pcard__frame {
+  background: linear-gradient(
+    150deg,
+    #ffe9a8,
+    #f2a8c8 22%,
+    #a8d0f2 42%,
+    #b7f2c8 60%,
+    #f2e2a8 78%,
+    #d7b0f0
+  );
 }
 
-.pcard--legendary .pcard__frame {
-  background: linear-gradient(150deg, #fff0b8, #e8c25e 30%, #d67b6b 55%, #6fb0d6 80%, #fff0b8);
-}
-
-.pcard--epic .pcard__frame::after,
-.pcard--legendary .pcard__frame::after {
+.pcard--hidden .pcard__frame::after {
   content: '';
   position: absolute;
   inset: 0;
   z-index: 2;
   pointer-events: none;
-  background: linear-gradient(115deg, transparent 40%, rgba(255, 255, 255, 0.5) 48%, transparent 56%);
+  background: linear-gradient(
+    115deg,
+    transparent 34%,
+    rgba(255, 255, 255, 0.6) 46%,
+    rgba(255, 255, 255, 0.15) 52%,
+    transparent 64%
+  );
   mix-blend-mode: overlay;
 }
 

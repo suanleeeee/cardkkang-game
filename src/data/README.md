@@ -9,7 +9,7 @@
 {
   id: 'base-001',              // 고유 ID (중복 금지)
   name: '진관사 jeol',
-  rarity: 'legendary',         // common | uncommon | rare | epic | legendary
+  rarity: 'hidden',            // 'normal'(일반) | 'hidden'(히든)
   image: 'cards/base-001.png', // public/cards/base-001.png (없으면 글자 플레이스홀더)
   set: 'svSk',
 
@@ -58,20 +58,19 @@ export const CARDS: CardDef[] = [...baseSet]
 {
   id: 'base-pack',
   name: '베이스 세트 부스터',
-  cardsPerPack: 5,
+  cardsPerPack: 3,
   cardPool: ['base-001', 'base-002', /* ... */], // 생략 시 전체 카드
   slots: [
-    { odds: { common: 1 } },
-    { odds: { common: 1 } },
-    { odds: { common: 1 } },
-    { odds: { uncommon: 1 } },
-    { odds: { rare: 0.9, epic: 0.09, legendary: 0.01 } }, // "레어 슬롯"
+    { odds: { normal: 1 } },
+    { odds: { normal: 1 } },
+    { odds: { normal: 0.9, hidden: 0.1 } }, // "히든 찬스" 슬롯
   ],
 }
 ```
 
 - `cardsPerPack` 이 `slots` 길이보다 크면 **마지막 슬롯 규칙을 반복**합니다.
-- 지정한 등급의 카드가 풀에 없으면 높은 등급 → 낮은 등급 순으로 대체합니다.
+- 지정한 등급의 카드가 풀에 없으면 hidden → normal 순으로 대체합니다.
+- 개봉은 한 장씩 옆으로 넘기며 공개하는 방식입니다.
 
 ## 4. 데모 데이터 제거
 

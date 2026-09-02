@@ -1,20 +1,14 @@
 import type { Rarity } from './types'
 
 export const RARITY_LABEL: Record<Rarity, string> = {
-  common: '커먼',
-  uncommon: '언커먼',
-  rare: '레어',
-  epic: '에픽',
-  legendary: '레전더리',
+  normal: '일반',
+  hidden: '히든',
 }
 
 /** 카드 테두리/글로우에 쓰는 색 */
 export const RARITY_COLOR: Record<Rarity, string> = {
-  common: '#9aa5b1',
-  uncommon: '#3fb950',
-  rare: '#4c8dff',
-  epic: '#a371f7',
-  legendary: '#f0a020',
+  normal: '#c9a13c',
+  hidden: '#9b5de5',
 }
 
 /** 등급별 가중치 테이블에서 하나를 뽑는다 */
@@ -26,7 +20,7 @@ export function pickWeighted(
     Rarity,
     number,
   ][]
-  if (entries.length === 0) return 'common'
+  if (entries.length === 0) return 'normal'
 
   const total = entries.reduce((sum, [, w]) => sum + w, 0)
   let roll = rng() * total
