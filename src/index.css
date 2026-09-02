@@ -286,33 +286,39 @@ code {
 }
 
 .tear--active .tear__card {
-  animation: cardOut 0.78s cubic-bezier(0.22, 0.8, 0.3, 1) forwards;
+  animation: cardOut 0.8s cubic-bezier(0.22, 0.8, 0.3, 1) forwards;
 }
 
 .tear--active .tear__pack {
-  animation: packDrop 0.5s ease forwards;
+  animation: packDrop 0.6s ease-in forwards;
   pointer-events: none;
 }
 
+/* 카드: 원위치 → 위로 올라갔다 → 다시 원위치 */
 @keyframes cardOut {
   0% {
-    transform: translateY(18%) scale(0.94);
+    transform: translateY(0) scale(1);
   }
-  48% {
-    transform: translateY(-52%) scale(1.02);
+  45% {
+    transform: translateY(-42%) scale(1.03);
   }
   100% {
     transform: translateY(0) scale(1);
   }
 }
 
+/* 봉투: 원래 위치에서 아래로 내려가며 사라짐 */
 @keyframes packDrop {
   0% {
-    transform: translateY(0) scale(1);
+    transform: translateY(0);
+    opacity: 1;
+  }
+  22% {
+    transform: translateY(0);
     opacity: 1;
   }
   100% {
-    transform: translateY(26px) scale(0.9);
+    transform: translateY(72%) scale(0.94);
     opacity: 0;
   }
 }
