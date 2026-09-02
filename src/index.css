@@ -162,75 +162,65 @@ code {
   font-size: 0.85em;
 }
 
-/* ── 팩 목록 ───────────────────────────── */
-.shelf {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-top: 8px;
+/* ── 팩 갤러리 ─────────────────────────── */
+.pack-gallery {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-top: 12px;
 }
 
-.packcard {
+.pack-tile {
   display: flex;
-  gap: 14px;
-  align-items: center;
-  text-align: left;
-  padding: 14px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 16px;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0;
+  border: 0;
+  background: transparent;
   cursor: pointer;
   color: var(--text);
 }
 
-.packcard:active {
-  background: var(--surface-2);
+.pack-tile:active {
+  transform: translateY(1px);
 }
 
-.packcard__art {
+.pack-tile__art {
   position: relative;
-  flex: 0 0 auto;
-  width: 68px;
-  height: 92px;
-  border-radius: 10px;
+  aspect-ratio: 63 / 88;
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: rgba(255, 255, 255, 0.9);
-  background: linear-gradient(150deg, var(--gold-1), var(--gold-2) 60%, var(--gold-3));
-  border: 2px solid #fff;
-  box-shadow: 0 4px 10px rgba(201, 161, 60, 0.35);
+  background: linear-gradient(150deg, var(--gold-1), var(--gold-2) 55%, var(--gold-3));
+  border: 3px solid #fff;
+  box-shadow: 0 8px 20px rgba(201, 161, 60, 0.3);
   overflow: hidden;
 }
 
-.packcard__art-mark {
-  font-size: 1.6rem;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+.pack-tile__art::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 42%, rgba(255, 255, 255, 0.5) 50%, transparent 58%);
 }
 
-.packcard__art img {
+.pack-tile__art img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.packcard__name {
-  font-weight: 800;
-  font-size: 1rem;
+.pack-tile__mark {
+  font-size: 2.6rem;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
 }
 
-.packcard__desc {
-  color: var(--muted);
-  font-size: 0.8rem;
-  margin-top: 2px;
-  line-height: 1.4;
-}
-
-.packcard__cta {
-  margin-top: 6px;
-  color: var(--accent);
-  font-size: 0.8rem;
+.pack-tile__name {
   font-weight: 700;
+  font-size: 0.9rem;
+  text-align: center;
 }
 
 /* ── 개봉 ──────────────────────────────── */
@@ -246,66 +236,44 @@ code {
 }
 
 .sealed {
-  margin: 32px auto 0;
+  margin: 48px auto 0;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  padding: 24px 32px;
+  justify-content: center;
+  padding: 0;
   border: 0;
   background: transparent;
   cursor: pointer;
-  color: var(--text);
 }
 
 .sealed__pack {
   position: relative;
-  width: 172px;
-  height: 240px;
-  border-radius: 16px;
+  width: 208px;
+  aspect-ratio: 63 / 88;
+  border-radius: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: rgba(255, 255, 255, 0.92);
   background: linear-gradient(150deg, var(--gold-1), var(--gold-2) 55%, var(--gold-3));
   border: 4px solid #fff;
-  box-shadow: 0 14px 34px rgba(201, 161, 60, 0.4);
-  animation: wobble 2.6s ease-in-out infinite;
+  box-shadow: 0 16px 36px rgba(201, 161, 60, 0.42);
 }
 
 .sealed__pack::after {
   content: '';
   position: absolute;
   inset: 0;
-  border-radius: 12px;
+  border-radius: 14px;
   background: linear-gradient(115deg, transparent 42%, rgba(255, 255, 255, 0.55) 50%, transparent 58%);
 }
 
+.sealed:active .sealed__pack {
+  transform: scale(0.97);
+}
+
 .sealed__pack-mark {
-  font-size: 3.4rem;
+  font-size: 3.6rem;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.28);
-}
-
-@keyframes wobble {
-  0%, 100% { transform: rotate(-2.5deg); }
-  50% { transform: rotate(2.5deg); }
-}
-
-.sealed__name {
-  font-weight: 800;
-  font-size: 1.05rem;
-}
-
-.sealed__sub {
-  font-size: 0.8rem;
-  color: var(--muted);
-  margin-top: -4px;
-}
-
-.sealed__cta {
-  color: var(--accent);
-  font-weight: 700;
-  font-size: 0.85rem;
 }
 
 /* ── 카드 그리드 & 플립 ────────────────── */
@@ -360,13 +328,28 @@ code {
 
 .deck__card {
   position: relative;
-  transition: transform 0.24s ease, opacity 0.24s ease;
+  transition: transform 0.22s ease, opacity 0.22s ease;
   cursor: grab;
   touch-action: pan-y;
 }
 
 .deck__card.is-exiting {
   pointer-events: none;
+}
+
+.deck__card.is-entering {
+  animation: deckEnter 0.22s ease-out;
+}
+
+@keyframes deckEnter {
+  from {
+    transform: translateX(52%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 
 .deck__hint {
@@ -418,36 +401,18 @@ code {
 
 /* ── 결과 요약 ─────────────────────────── */
 .summary {
-  margin-top: 22px;
+  margin-top: 18px;
 }
 
-.summary__list {
-  list-style: none;
-  padding: 0;
-  max-width: 340px;
-  margin: 12px auto 0;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+.summary__cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin: 14px 0 4px;
 }
 
-.summary__item {
-  display: flex;
-  justify-content: space-between;
-  padding: 9px 12px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-left-width: 4px;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.summary__item.rarity-normal { border-left-color: var(--gold-2); }
-.summary__item.rarity-hidden { border-left-color: #9b5de5; }
-
-.summary__tag {
-  color: var(--muted);
-  font-size: 0.82rem;
+.summary__card {
+  min-width: 0;
 }
 
 /* ── 도감 ──────────────────────────────── */

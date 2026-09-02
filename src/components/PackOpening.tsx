@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { openPack } from '../game/openPack'
-import { RARITY_LABEL } from '../game/rarity'
 import type { CardDef, PackDef } from '../game/types'
 import { useCollection } from '../state/collection'
 import { CardView } from './CardView'
@@ -63,10 +62,10 @@ export function PackOpening({ pack, onDone, onInspect }: Props) {
       setIdx((i) => i + 1)
       setDrag(0)
       setExiting(false)
-    }, 240)
+    }, 220)
   }
 
-  // ── 스와이프 ──
+  // 카드 탭 / 스와이프
   function onPointerDown(e: React.PointerEvent) {
     startX.current = e.clientX
     moved.current = false
@@ -88,15 +87,17 @@ export function PackOpening({ pack, onDone, onInspect }: Props) {
     if (from == null) return
     const dx = e.clientX - from
     if (!moved.current) {
-      // 탭: 공개
+      // 탭: 안 뒤집혔으면 공개, 뒤집혔으면 다음
       if (!curRevealed) reveal()
+      else advance()
       return
     }
-    if (curRevealed && Math.abs(dx) > 60) {
-      advance()
-    } else {
-      setDrag(0)
-    }
+    if (curRevealed && Math.abs(dx) > 55) advance()
+    else setDrag(0)
+  }
+  function onPointerCancel() {
+    startX.current = null
+    setDrag(0)
   }
 
   if (cards.length === 0) {
@@ -120,13 +121,11 @@ export function PackOpening({ pack, onDone, onInspect }: Props) {
           className="sealed"
           onClick={() => setPhase('revealing')}
           type="button"
+          aria-label="카드팩 뜯기"
         >
           <div className="sealed__pack" aria-hidden>
             <span className="sealed__pack-mark">✦</span>
           </div>
-          <div className="sealed__name">{pack.name}</div>
-          <div className="sealed__sub">{cards.length}장 구성</div>
-          <div className="sealed__cta">탭해서 뜯기</div>
         </button>
       </div>
     )
@@ -135,8 +134,10 @@ export function PackOpening({ pack, onDone, onInspect }: Props) {
   if (phase === 'revealing') {
     const pulled = cards[idx]
     const style: React.CSSProperties = exiting
-      ? { transform: 'translateX(115%) rotate(12deg)', opacity: 0 }
-      : { transform: `translateX(${drag}px) rotate(${drag * 0.03}deg)` }
+      ? { transform: 'translateX(-115%)', opacity: 0 }
+      : drag
+        ? { transform: `translateX(${drag}px)` }
+        : {}
 
     return (
       <div className="opening">
@@ -157,15 +158,16 @@ export function PackOpening({ pack, onDone, onInspect }: Props) {
           {!isLast && <div className="deck__stack" aria-hidden />}
 
           <div
-            className={'deck__card' + (exiting ? ' is-exiting' : '')}
+            key={idx}
+            className={
+              'deck__card' +
+              (exiting ? ' is-exiting' : ' is-entering')
+            }
             style={style}
             onPointerDown={onPointerDown}
             onPointerMove={onPointerMove}
             onPointerUp={onPointerUp}
-            onPointerCancel={() => {
-              startX.current = null
-              setDrag(0)
-            }}
+            onPointerCancel={onPointerCancel}
           >
             <div className={'flipper' + (curRevealed ? ' is-flipped' : '')}>
               <div className="flipper__inner">
@@ -184,20 +186,8 @@ export function PackOpening({ pack, onDone, onInspect }: Props) {
           {!curRevealed
             ? '카드를 탭해서 공개'
             : isLast
-              ? '옆으로 넘겨서 결과 보기'
-              : '옆으로 넘겨서 다음 카드'}
-        </div>
-
-        <div className="opening__actions">
-          {!curRevealed ? (
-            <button className="btn" onClick={reveal} type="button">
-              공개
-            </button>
-          ) : (
-            <button className="btn btn--primary" onClick={advance} type="button">
-              {isLast ? '결과 보기' : `다음 (${idx + 1}/${cards.length})`}
-            </button>
-          )}
+              ? '탭 또는 스와이프로 결과 보기'
+              : '탭 또는 스와이프로 다음 카드'}
         </div>
       </div>
     )
@@ -208,21 +198,17 @@ export function PackOpening({ pack, onDone, onInspect }: Props) {
     <div className="opening">
       <div className="summary">
         <h3>획득한 카드</h3>
-        <ul className="summary__list">
+        <div className="summary__cards">
           {cards.map((pulled, i) => (
-            <li
-              key={i}
-              className={`summary__item rarity-${pulled.card.rarity}`}
-              onClick={() => onInspect(pulled.card)}
-            >
-              <span>{pulled.card.name}</span>
-              <span className="summary__tag">
-                {RARITY_LABEL[pulled.card.rarity]}
-                {pulled.isNew && ' · NEW'}
-              </span>
-            </li>
+            <div className="summary__card" key={i}>
+              <CardView
+                card={pulled.card}
+                isNew={pulled.isNew}
+                onClick={() => onInspect(pulled.card)}
+              />
+            </div>
           ))}
-        </ul>
+        </div>
         <div className="opening__actions">
           <button className="btn btn--primary" onClick={onDone} type="button">
             보관하고 계속

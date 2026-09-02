@@ -7,30 +7,24 @@ interface Props {
 
 export function PackShelf({ onOpen }: Props) {
   return (
-    <div className="shelf">
+    <div className="pack-gallery">
       {PACKS.map((pack) => (
         <button
           key={pack.id}
-          className="packcard"
+          className="pack-tile"
           onClick={() => onOpen(pack)}
           type="button"
         >
-          <div className="packcard__art">
+          <div className="pack-tile__art">
             {pack.image ? (
               <img src={pack.image} alt={pack.name} />
             ) : (
-              <span className="packcard__art-mark" aria-hidden>
+              <span className="pack-tile__mark" aria-hidden>
                 ✦
               </span>
             )}
           </div>
-          <div className="packcard__info">
-            <div className="packcard__name">{pack.name}</div>
-            {pack.description && (
-              <div className="packcard__desc">{pack.description}</div>
-            )}
-            <div className="packcard__cta">{pack.cardsPerPack}장 개봉 →</div>
-          </div>
+          <div className="pack-tile__name">{pack.name}</div>
         </button>
       ))}
     </div>
