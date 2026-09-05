@@ -139,7 +139,7 @@ export function PackOpening({ pack, onDone, onInspect }: Props) {
       >
         <div className={'tear' + (tearing ? ' tear--active' : '')}>
           <div className="tear__card" aria-hidden>
-            <span>?</span>
+            <span>{pack.short ?? pack.name}</span>
           </div>
           <button
             className="tear__pack"
@@ -148,7 +148,7 @@ export function PackOpening({ pack, onDone, onInspect }: Props) {
             aria-label="카드팩 뜯기"
             disabled={tearing}
           >
-            <span className="tear__pack-mark">✦</span>
+            <span className="tear__pack-title">{pack.name}</span>
           </button>
         </div>
         {!tearing && <div className="deck__hint">탭하여 뜯기</div>}
@@ -198,7 +198,7 @@ export function PackOpening({ pack, onDone, onInspect }: Props) {
             <div className={'flipper' + (curRevealed ? ' is-flipped' : '')}>
               <div className="flipper__inner">
                 <div className="flipper__back" aria-hidden>
-                  <span>?</span>
+                  <span>{pack.short ?? pack.name}</span>
                 </div>
                 <div className="flipper__front">
                   <CardView card={pulled.card} isNew={pulled.isNew} />

@@ -175,6 +175,13 @@ code {
   --pk-light: color-mix(in srgb, var(--pk-mid) 42%, #ffffff);
   --pk-dark: color-mix(in srgb, var(--pk-mid) 70%, #000000);
   --pk-grad: linear-gradient(150deg, var(--pk-light), var(--pk-mid) 55%, var(--pk-dark));
+  /* 큰 면적(봉투 안 카드·뒷면)용 — 덜 창백하게, 색이 또렷하게 */
+  --pk-grad-card: linear-gradient(
+    150deg,
+    color-mix(in srgb, var(--pk-mid) 76%, #ffffff),
+    var(--pk-mid) 52%,
+    var(--pk-dark)
+  );
   --pk-grad-deep: linear-gradient(
     150deg,
     var(--pk-mid),
@@ -233,9 +240,15 @@ code {
   object-fit: cover;
 }
 
-.pack-tile__mark {
-  font-size: 2.6rem;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+.pack-tile__title {
+  padding: 0 10%;
+  font-size: 1.15rem;
+  font-weight: 800;
+  line-height: 1.35;
+  text-align: center;
+  color: #fff;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.32);
+  word-break: keep-all;
 }
 
 /* ── 개봉 ──────────────────────────────── */
@@ -284,7 +297,7 @@ code {
 .tear__card {
   z-index: 0;
   font-size: 2.4rem;
-  background: var(--pk-grad);
+  background: var(--pk-grad-card);
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
 }
 
@@ -312,9 +325,26 @@ code {
   transform: scale(0.97);
 }
 
-.tear__pack-mark {
-  font-size: 3.4rem;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+.tear__pack-title {
+  padding: 0 12%;
+  font-size: 1.9rem;
+  font-weight: 800;
+  line-height: 1.3;
+  text-align: center;
+  color: #fff;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+  word-break: keep-all;
+}
+
+/* 카드 뒷면에 찍힌 세트 이름 (은평 / 광교) */
+.tear__card span,
+.flipper__back span {
+  font-size: 2.2rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: #fff;
+  opacity: 0.92;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 /* 봉투를 뜯을 때: 먼저 좌우로 흔들, 그다음 아래로 미끄러져 화면 밖으로
@@ -493,7 +523,7 @@ code {
   font-size: 2.4rem;
   color: #fff;
   border-radius: 12px;
-  background: var(--pk-grad, linear-gradient(150deg, var(--gold-1), var(--gold-2) 55%, var(--gold-3)));
+  background: var(--pk-grad-card, linear-gradient(150deg, var(--gold-1), var(--gold-2) 55%, var(--gold-3)));
   border: 3px solid #fff;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }

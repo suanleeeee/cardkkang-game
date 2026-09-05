@@ -25,9 +25,7 @@ export function PackShelf({ onOpen }: Props) {
             {pack.image ? (
               <img src={pack.image} alt={pack.name} />
             ) : (
-              <span className="pack-tile__mark" aria-hidden>
-                ✦
-              </span>
+              <span className="pack-tile__title">{pack.name}</span>
             )}
           </div>
         </button>

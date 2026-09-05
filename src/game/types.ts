@@ -98,6 +98,8 @@ export interface PackDef {
   /** 고유 ID (예: "base-pack") */
   id: string
   name: string
+  /** 카드 뒷면에 찍히는 짧은 이름 (예: "은평", "광교"). 없으면 name 사용 */
+  short?: string
   description?: string
   /** 팩 아트워크 경로/URL */
   image?: string

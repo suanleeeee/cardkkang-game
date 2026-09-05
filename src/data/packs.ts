@@ -13,6 +13,7 @@ export const PACKS: PackDef[] = [
   {
     id: 'eunpyeong',
     name: '전통의 은평구',
+    short: '은평',
     description: '은평구 카드 3장 구성.',
     color: '#e07b2c', // 주황
     cardsPerPack: 3,
@@ -26,6 +27,7 @@ export const PACKS: PackDef[] = [
   {
     id: 'gwanggyo',
     name: '미래의 광교',
+    short: '광교',
     description: '광교 카드 3장 구성.',
     color: '#3b7fd4', // 파랑
     cardsPerPack: 3,
