@@ -8,11 +8,13 @@ interface Props {
   pack: PackDef
   onDone: () => void
   onInspect: (card: CardDef) => void
+  /** 암전으로 개봉을 끝낼 때 (instant 팩) */
+  onBlackout: () => void
 }
 
 type Phase = 'sealed' | 'tearing' | 'revealing' | 'summary'
 
-export function PackOpening({ pack, onDone, onInspect }: Props) {
+export function PackOpening({ pack, onDone, onInspect, onBlackout }: Props) {
   const { counts, addPull, markPackOpened } = useCollection()
 
   // 팩을 여는 순간의 보유 목록으로 결과를 고정한다.
@@ -72,7 +74,8 @@ export function PackOpening({ pack, onDone, onInspect }: Props) {
   function advance() {
     if (!curRevealed || exiting) return
     if (isLast) {
-      setPhase('summary')
+      if (pack.instant) onBlackout()
+      else setPhase('summary')
       return
     }
     setExiting(true)
@@ -222,7 +225,9 @@ export function PackOpening({ pack, onDone, onInspect }: Props) {
           {!curRevealed
             ? '카드를 탭해서 뒤집기'
             : isLast
-              ? '탭해서 결과 보기'
+              ? pack.instant
+                ? '탭해서 마무리'
+                : '탭해서 결과 보기'
               : '탭 또는 스와이프로 다음 카드'}
         </div>
       </div>

@@ -719,6 +719,31 @@ code {
   font-weight: 500;
 }
 
+/* ── 암전 (히든 보스 개봉 마무리) ───────── */
+.blackout {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: #000;
+  pointer-events: all;
+  animation: blackoutSeq 1.3s ease forwards;
+}
+
+@keyframes blackoutSeq {
+  0% {
+    opacity: 0;
+  }
+  36% {
+    opacity: 1;
+  }
+  68% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
 /* ── 상세 시트 ─────────────────────────── */
 .sheet {
   position: fixed;
