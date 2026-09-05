@@ -266,6 +266,105 @@ code {
   word-break: keep-all;
 }
 
+/* ── 히든 보스 팩: 안개 속에서 등장 ─────── */
+.pack-tile--hidden {
+  position: relative;
+  overflow: visible;
+  animation: bossEmerge 1.5s cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+
+.pack-tile--hidden .pack-tile__art {
+  z-index: 1;
+  background: radial-gradient(125% 100% at 50% 0%, #6a568f, #221830 78%);
+  border-color: rgba(255, 255, 255, 0.85);
+  animation: bossPulse 3.2s ease-in-out infinite;
+}
+
+.pack-tile--hidden .pack-tile__art::after {
+  background: linear-gradient(
+    115deg,
+    transparent 40%,
+    rgba(200, 170, 255, 0.35) 50%,
+    transparent 60%
+  );
+}
+
+.pack-tile__fog,
+.deck__fog {
+  position: absolute;
+  pointer-events: none;
+  background:
+    radial-gradient(closest-side, rgba(176, 170, 196, 0.65), transparent 72%) 2%
+      12% / 62% 46% no-repeat,
+    radial-gradient(closest-side, rgba(150, 145, 172, 0.6), transparent 72%) 84%
+      52% / 64% 54% no-repeat,
+    radial-gradient(closest-side, rgba(198, 194, 214, 0.55), transparent 72%) 38%
+      94% / 82% 46% no-repeat;
+}
+
+.pack-tile__fog {
+  inset: -40% -32%;
+  z-index: 0;
+  filter: blur(16px);
+  animation: fogDrift 9s ease-in-out infinite alternate;
+}
+
+/* 팩 위로 지나가는 옅은 안개 자락 */
+.pack-tile--hidden .pack-tile__art::before {
+  content: '';
+  position: absolute;
+  inset: -20% -30%;
+  z-index: 2;
+  pointer-events: none;
+  background: radial-gradient(
+      closest-side,
+      rgba(230, 228, 240, 0.4),
+      transparent 70%
+    )
+    30% 40% / 90% 60% no-repeat;
+  filter: blur(10px);
+  animation: fogDrift 7s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes bossEmerge {
+  0% {
+    opacity: 0;
+    filter: blur(16px) brightness(1.4);
+    transform: scale(0.85);
+  }
+  55% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0) brightness(1);
+    transform: scale(1);
+  }
+}
+
+@keyframes bossPulse {
+  0%,
+  100% {
+    box-shadow:
+      0 0 24px rgba(140, 100, 200, 0.35),
+      0 8px 22px rgba(0, 0, 0, 0.35);
+  }
+  50% {
+    box-shadow:
+      0 0 44px rgba(170, 120, 235, 0.6),
+      0 8px 22px rgba(0, 0, 0, 0.35);
+  }
+}
+
+@keyframes fogDrift {
+  from {
+    transform: translate(-6%, 0);
+  }
+  to {
+    transform: translate(6%, -5%);
+  }
+}
+
 /* ── 개봉 ──────────────────────────────── */
 .opening {
   text-align: center;
@@ -500,6 +599,34 @@ code {
   }
 }
 
+/* ── 히든 보스: 안개 속에서 카드가 나타남 ── */
+.deck__fog {
+  inset: -30% -20%;
+  z-index: 0;
+  filter: blur(20px);
+  animation: fogDrift 11s ease-in-out infinite alternate;
+}
+
+.deck__card.is-boss-in {
+  animation: bossCardIn 1s cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+
+@keyframes bossCardIn {
+  0% {
+    opacity: 0;
+    filter: blur(18px);
+    transform: scale(0.72) translateY(8%);
+  }
+  55% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    transform: scale(1) translateY(0);
+  }
+}
+
 .deck__hint {
   margin-top: 14px;
   font-size: 0.82rem;
@@ -557,6 +684,11 @@ code {
   grid-template-columns: repeat(3, 1fr);
   gap: 8px;
   margin: 14px 0 4px;
+}
+
+.summary__cards--one {
+  grid-template-columns: minmax(0, 240px);
+  justify-content: center;
 }
 
 .summary__card {

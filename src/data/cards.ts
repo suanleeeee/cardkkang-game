@@ -112,7 +112,39 @@ const eunpyeong: CardDef[] = [
   },
 ]
 
-export const CARDS: CardDef[] = [...gwanggyo, ...eunpyeong]
+// 히든 보스 — 두 팩을 모두 연 뒤에만 등장하는 팩에서 나온다
+const hidden: CardDef[] = [
+  {
+    id: 'hidden-boss',
+    name: '???',
+    rarity: 'hidden',
+    set: 'hidden',
+    stage: '기본',
+    category: '히든 보스',
+    hp: 300,
+    type: 'darkness',
+    ability: {
+      name: '안개의 군림',
+      text: '이 포켓몬이 배틀에 있는 한, 상대는 안개 밖으로 나갈 수 없다.',
+    },
+    attacks: [
+      {
+        cost: ['darkness', 'darkness', 'colorless'],
+        name: '심연',
+        damage: '200',
+        text: '상대 벤치 포켓몬 1마리에게도 50 데미지.',
+      },
+    ],
+    weakness: { type: 'fairy', value: '×2' },
+    retreat: 4,
+    number: '000/006',
+    mark: '★',
+    flavorTitle: '???',
+    flavorText: '안개 속에서 계속 지켜보고 있었다.',
+  },
+]
+
+export const CARDS: CardDef[] = [...gwanggyo, ...eunpyeong, ...hidden]
 
 export const CARDS_BY_ID: Record<string, CardDef> = Object.fromEntries(
   CARDS.map((c) => [c.id, c]),

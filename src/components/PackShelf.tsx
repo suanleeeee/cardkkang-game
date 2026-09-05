@@ -8,7 +8,17 @@ interface Props {
 
 export function PackShelf({ onOpen }: Props) {
   const { openedPacks, resetPacks } = useCollection()
-  const available = PACKS.filter((pack) => !openedPacks.has(pack.id))
+
+  const normalPacks = PACKS.filter((p) => !p.hidden)
+  const hiddenPacks = PACKS.filter((p) => p.hidden)
+  const allNormalCleared = normalPacks.every((p) => openedPacks.has(p.id))
+
+  const available: PackDef[] = [
+    ...normalPacks.filter((p) => !openedPacks.has(p.id)),
+    ...(allNormalCleared
+      ? hiddenPacks.filter((p) => !openedPacks.has(p.id))
+      : []),
+  ]
 
   if (available.length === 0) {
     return (
@@ -30,7 +40,7 @@ export function PackShelf({ onOpen }: Props) {
       {available.map((pack) => (
         <button
           key={pack.id}
-          className="pack-tile"
+          className={'pack-tile' + (pack.hidden ? ' pack-tile--hidden' : '')}
           onClick={() => onOpen(pack)}
           type="button"
           aria-label={pack.name}
@@ -40,6 +50,7 @@ export function PackShelf({ onOpen }: Props) {
               : undefined
           }
         >
+          {pack.hidden && <span className="pack-tile__fog" aria-hidden />}
           <div className="pack-tile__art">
             {pack.image ? (
               <img src={pack.image} alt={pack.name} />

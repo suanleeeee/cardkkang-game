@@ -107,6 +107,10 @@ export interface PackDef {
    * 비우면 전체 카드 풀을 순서대로 사용.
    */
   cardPool?: string[]
+  /** true 면 다른 모든 일반 팩을 개봉한 뒤에만 홈에 등장 (히든 팩) */
+  hidden?: boolean
+  /** true 면 뜯기 연출 없이 바로 카드가 나오고, 탭하면 뒤집힘 */
+  instant?: boolean
 }
 
 /** 팩을 열어서 나온 카드 1장의 결과 */

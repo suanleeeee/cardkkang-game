@@ -65,12 +65,15 @@ export const CARDS: CardDef[] = [...baseSet]
 - `cardPool`: 이 팩에서 나올 카드 ID 목록. **정의된 순서대로, 중복 없이** `cardsPerPack` 장까지 뽑힙니다. 생략 시 전체 카드 풀을 순서대로 사용.
 - `color`: 지정하면 봉투·카드 뒷면 그라데이션이 그 색으로 바뀝니다. 생략 시 금색.
 - `short`: 카드 뒷면 라벨. 생략 시 `name`.
-- 개봉은 한 장씩 탭/스와이프로 넘기며 공개합니다.
+- `hidden: true`: 다른 모든 일반 팩을 개봉한 뒤에만 홈에 안개와 함께 등장 (히든 보스).
+- `instant: true`: 뜯기 연출 없이 바로 카드가 나오고, 탭하면 뒤집힘.
+- 일반 개봉은 한 장씩 탭/스와이프로 넘기며 공개합니다.
 
 ## 4. 현재 데이터
 
-`cards.ts` 는 `gwanggyo` / `eunpyeong` 두 세트(각 3장)로 구성돼 있고,
-`packs.ts` 의 두 팩이 각각 `cardPool` 로 자기 세트만 뽑습니다.
+`cards.ts` 는 `gwanggyo` / `eunpyeong` 세트(각 3장) + 히든 보스(`hidden-boss`)로 구성.
+`packs.ts` 는 두 일반 팩 + `hidden: true, instant: true` 인 `???` 팩.
+두 일반 팩을 모두 열면 히든 팩이 등장합니다.
 새 세트를 추가할 때 같은 패턴(세트 배열 + 전용 팩)을 따르면 됩니다.
 `localStorage` 컬렉션은 `localStorage.removeItem('cardkkang.collection.v1')` 로 리셋합니다.
 

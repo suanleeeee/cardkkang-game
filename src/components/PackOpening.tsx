@@ -27,7 +27,8 @@ export function PackOpening({ pack, onDone, onInspect }: Props) {
     ? ({ ['--pack-color' as string]: pack.color } as React.CSSProperties)
     : undefined
 
-  const [phase, setPhase] = useState<Phase>('sealed')
+  // instant 팩은 뜯기 연출 없이 바로 카드가 나온다
+  const [phase, setPhase] = useState<Phase>(pack.instant ? 'revealing' : 'sealed')
   const [idx, setIdx] = useState(0)
   const [revealed, setRevealed] = useState<boolean[]>(() => cards.map(() => false))
   const [drag, setDrag] = useState(0)
@@ -166,29 +167,37 @@ export function PackOpening({ pack, onDone, onInspect }: Props) {
         : {}
 
     return (
-      <div className="opening" style={openingStyle}>
-        <div className="deck__progress">
-          {cards.map((_, i) => (
-            <span
-              key={i}
-              className={
-                'deck__dot' +
-                (i === idx ? ' is-current' : i < idx ? ' is-done' : '')
-              }
-            />
-          ))}
-        </div>
+      <div
+        className={'opening' + (pack.instant ? ' opening--boss' : '')}
+        style={openingStyle}
+      >
+        {cards.length > 1 && (
+          <div className="deck__progress">
+            {cards.map((_, i) => (
+              <span
+                key={i}
+                className={
+                  'deck__dot' +
+                  (i === idx ? ' is-current' : i < idx ? ' is-done' : '')
+                }
+              />
+            ))}
+          </div>
+        )}
 
         <div className="deck">
+          {pack.instant && <div className="deck__fog" aria-hidden />}
           <div
             key={idx}
             className={
               'deck__card' +
               (exiting
                 ? ' is-exiting'
-                : fromTear && idx === 0
-                  ? ' is-appearing'
-                  : ' is-entering')
+                : pack.instant && idx === 0
+                  ? ' is-boss-in'
+                  : fromTear && idx === 0
+                    ? ' is-appearing'
+                    : ' is-entering')
             }
             style={style}
             onPointerDown={onPointerDown}
@@ -211,9 +220,9 @@ export function PackOpening({ pack, onDone, onInspect }: Props) {
 
         <div className="deck__hint">
           {!curRevealed
-            ? '카드를 탭해서 공개'
+            ? '카드를 탭해서 뒤집기'
             : isLast
-              ? '탭 또는 스와이프로 결과 보기'
+              ? '탭해서 결과 보기'
               : '탭 또는 스와이프로 다음 카드'}
         </div>
       </div>
@@ -222,10 +231,15 @@ export function PackOpening({ pack, onDone, onInspect }: Props) {
 
   // phase === 'summary'
   return (
-    <div className="opening">
+    <div className="opening" style={openingStyle}>
       <div className="summary">
         <h3>획득한 카드</h3>
-        <div className="summary__cards">
+        <div
+          className={
+            'summary__cards' +
+            (cards.length === 1 ? ' summary__cards--one' : '')
+          }
+        >
           {cards.map((pulled, i) => (
             <div className="summary__card" key={i}>
               <CardView

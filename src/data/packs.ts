@@ -26,6 +26,17 @@ export const PACKS: PackDef[] = [
     cardsPerPack: 3,
     cardPool: ['gwanggyo-1', 'gwanggyo-2', 'gwanggyo-3'],
   },
+  {
+    id: 'hidden',
+    name: '???',
+    short: '???',
+    description: '두 팩을 모두 연 자에게만 안개 속에서 나타난다.',
+    color: '#4a3a63', // 어두운 보라
+    cardsPerPack: 1,
+    cardPool: ['hidden-boss'],
+    hidden: true,
+    instant: true,
+  },
 ]
 
 export const PACKS_BY_ID: Record<string, PackDef> = Object.fromEntries(
