@@ -80,7 +80,9 @@ body {
   flex: 1;
   overflow-y: auto;
   overflow-x: clip;
-  padding: 8px 16px 88px;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
 }
 
 .tabbar {
@@ -166,18 +168,18 @@ code {
   font-size: 0.85em;
 }
 
-/* ── 팩 갤러리 ─────────────────────────── */
+/* ── 팩 갤러리 (초기 화면: 팩 2개만 가운데 정렬) ── */
 .pack-gallery {
+  margin: auto;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 16px;
-  margin-top: 12px;
+  width: 100%;
+  max-width: 380px;
 }
 
 .pack-tile {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  display: block;
   padding: 0;
   border: 0;
   background: transparent;
@@ -219,12 +221,6 @@ code {
 .pack-tile__mark {
   font-size: 2.6rem;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
-}
-
-.pack-tile__name {
-  font-weight: 700;
-  font-size: 0.9rem;
-  text-align: center;
 }
 
 /* ── 개봉 ──────────────────────────────── */

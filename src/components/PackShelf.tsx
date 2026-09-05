@@ -14,6 +14,7 @@ export function PackShelf({ onOpen }: Props) {
           className="pack-tile"
           onClick={() => onOpen(pack)}
           type="button"
+          aria-label={pack.name}
         >
           <div className="pack-tile__art">
             {pack.image ? (
@@ -24,7 +25,6 @@ export function PackShelf({ onOpen }: Props) {
               </span>
             )}
           </div>
-          <div className="pack-tile__name">{pack.name}</div>
         </button>
       ))}
     </div>
