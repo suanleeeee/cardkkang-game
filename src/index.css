@@ -168,6 +168,21 @@ code {
   font-size: 0.85em;
 }
 
+/* ── 팩 테마색: --pack-color 를 기준으로 그라데이션 3종 파생 ── */
+.pack-tile,
+.opening {
+  --pk-mid: var(--pack-color, #c9a13c);
+  --pk-light: color-mix(in srgb, var(--pk-mid) 42%, #ffffff);
+  --pk-dark: color-mix(in srgb, var(--pk-mid) 70%, #000000);
+  --pk-grad: linear-gradient(150deg, var(--pk-light), var(--pk-mid) 55%, var(--pk-dark));
+  --pk-grad-deep: linear-gradient(
+    150deg,
+    var(--pk-mid),
+    var(--pk-dark) 55%,
+    color-mix(in srgb, var(--pk-dark) 62%, #000000)
+  );
+}
+
 /* ── 팩 갤러리 (초기 화면: 팩 2개만 가운데 정렬) ── */
 .pack-gallery {
   margin: auto;
@@ -199,9 +214,9 @@ code {
   align-items: center;
   justify-content: center;
   color: rgba(255, 255, 255, 0.9);
-  background: linear-gradient(150deg, var(--gold-1), var(--gold-2) 55%, var(--gold-3));
+  background: var(--pk-grad);
   border: 3px solid #fff;
-  box-shadow: 0 8px 20px rgba(201, 161, 60, 0.3);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
   overflow: hidden;
 }
 
@@ -269,17 +284,17 @@ code {
 .tear__card {
   z-index: 0;
   font-size: 2.4rem;
-  background: linear-gradient(150deg, var(--gold-1), var(--gold-2) 55%, var(--gold-3));
-  box-shadow: 0 10px 24px rgba(201, 161, 60, 0.35);
+  background: var(--pk-grad);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
 }
 
-/* 봉투 — 카드보다 세로로 1cm 김(아래로 연장), 약간 어둡고 그림자가 강함 */
+/* 봉투 — 카드보다 세로로 1cm 김(아래로 연장), 카드보다 진하고 그림자가 강함 */
 .tear__pack {
   z-index: 1;
   padding: 0;
   cursor: pointer;
   bottom: -1cm;
-  background: linear-gradient(150deg, #e6c469, #c6a044 50%, #a5822d);
+  background: var(--pk-grad-deep);
   box-shadow:
     0 20px 28px -8px rgba(0, 0, 0, 0.38),
     0 6px 14px rgba(0, 0, 0, 0.2);
@@ -478,7 +493,7 @@ code {
   font-size: 2.4rem;
   color: #fff;
   border-radius: 12px;
-  background: linear-gradient(150deg, var(--gold-1), var(--gold-2) 55%, var(--gold-3));
+  background: var(--pk-grad, linear-gradient(150deg, var(--gold-1), var(--gold-2) 55%, var(--gold-3)));
   border: 3px solid #fff;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }

@@ -15,6 +15,11 @@ export function PackShelf({ onOpen }: Props) {
           onClick={() => onOpen(pack)}
           type="button"
           aria-label={pack.name}
+          style={
+            pack.color
+              ? ({ ['--pack-color' as string]: pack.color } as React.CSSProperties)
+              : undefined
+          }
         >
           <div className="pack-tile__art">
             {pack.image ? (

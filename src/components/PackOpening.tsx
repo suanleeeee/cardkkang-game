@@ -22,6 +22,11 @@ export function PackOpening({ pack, onDone, onInspect }: Props) {
   const result = useMemo(() => openPack(pack, ownedIdsRef.current), [pack])
   const cards = result.cards
 
+  // 팩 테마색을 개봉 화면 전체에 전달 (봉투·카드 뒷면 그라데이션 기준)
+  const openingStyle = pack.color
+    ? ({ ['--pack-color' as string]: pack.color } as React.CSSProperties)
+    : undefined
+
   const [phase, setPhase] = useState<Phase>('sealed')
   const [idx, setIdx] = useState(0)
   const [revealed, setRevealed] = useState<boolean[]>(() => cards.map(() => false))
@@ -128,7 +133,10 @@ export function PackOpening({ pack, onDone, onInspect }: Props) {
   if (phase === 'sealed' || phase === 'tearing') {
     const tearing = phase === 'tearing'
     return (
-      <div className={'opening' + (tearing ? ' opening--tearing' : '')}>
+      <div
+        className={'opening' + (tearing ? ' opening--tearing' : '')}
+        style={openingStyle}
+      >
         <div className={'tear' + (tearing ? ' tear--active' : '')}>
           <div className="tear__card" aria-hidden>
             <span>?</span>
@@ -157,7 +165,7 @@ export function PackOpening({ pack, onDone, onInspect }: Props) {
         : {}
 
     return (
-      <div className="opening">
+      <div className="opening" style={openingStyle}>
         <div className="deck__progress">
           {cards.map((_, i) => (
             <span

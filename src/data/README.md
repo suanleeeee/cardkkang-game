@@ -56,26 +56,31 @@ export const CARDS: CardDef[] = [...baseSet]
 
 ```ts
 {
-  id: 'base-pack',
-  name: '베이스 세트 부스터',
+  id: 'eunpyeong',
+  name: '전통의 은평구',
+  color: '#e07b2c',                       // 봉투·카드 뒷면 배경색 (hex)
   cardsPerPack: 3,
-  cardPool: ['base-001', 'base-002', /* ... */], // 생략 시 전체 카드
+  cardPool: ['eunpyeong-1', 'eunpyeong-2', 'eunpyeong-3'], // 이 팩에서만 나올 카드
   slots: [
     { odds: { normal: 1 } },
     { odds: { normal: 1 } },
-    { odds: { normal: 0.9, hidden: 0.1 } }, // "히든 찬스" 슬롯
+    { odds: { normal: 0.7, hidden: 0.3 } }, // "히든 찬스" 슬롯
   ],
 }
 ```
 
+- `color`: 지정하면 봉투·카드 뒷면 그라데이션이 그 색으로 바뀝니다. 생략 시 금색.
+- `cardPool`: 세트별로 팩을 나누려면 해당 세트 카드 ID만 넣습니다. 생략 시 전체 카드.
 - `cardsPerPack` 이 `slots` 길이보다 크면 **마지막 슬롯 규칙을 반복**합니다.
 - 지정한 등급의 카드가 풀에 없으면 hidden → normal 순으로 대체합니다.
-- 개봉은 한 장씩 옆으로 넘기며 공개하는 방식입니다.
+- 개봉은 한 장씩 탭/스와이프로 넘기며 공개합니다.
 
-## 4. 데모 데이터 제거
+## 4. 현재 데이터
 
-실제 데이터가 준비되면 `cards.ts` / `packs.ts` 의 `demo-*` 항목을 지우면 됩니다.
-`localStorage` 컬렉션은 도감 탭의 "초기화" 버튼으로 리셋할 수 있습니다.
+`cards.ts` 는 `gwanggyo` / `eunpyeong` 두 세트(각 3장)로 구성돼 있고,
+`packs.ts` 의 두 팩이 각각 `cardPool` 로 자기 세트만 뽑습니다.
+새 세트를 추가할 때 같은 패턴(세트 배열 + 전용 팩)을 따르면 됩니다.
+`localStorage` 컬렉션은 `localStorage.removeItem('cardkkang.collection.v1')` 로 리셋합니다.
 
 ## 5. 에너지 아이콘
 

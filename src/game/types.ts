@@ -101,6 +101,8 @@ export interface PackDef {
   description?: string
   /** 팩 아트워크 경로/URL */
   image?: string
+  /** 팩 배경 테마 색 (hex). 봉투·카드 뒷면 그라데이션의 기준색 */
+  color?: string
   /** 한 팩에서 나오는 카드 수 */
   cardsPerPack: number
   /** 이 팩에서 나올 수 있는 카드 ID 목록. 비우면 전체 카드 풀 사용 */

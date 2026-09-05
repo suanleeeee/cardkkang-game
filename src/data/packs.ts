@@ -5,30 +5,35 @@ import type { PackDef } from '../game/types'
 // slots: 팩에서 카드가 뽑히는 "자리"마다 등급 확률을 정의합니다.
 // cardsPerPack 이 slots 보다 많으면 마지막 슬롯 규칙을 반복 사용합니다.
 // cardPool 을 지정하면 그 카드들 중에서만 뽑고, 비우면 전체 카드에서 뽑습니다.
+// color: 봉투/카드 뒷면 배경 그라데이션의 기준색.
 // 등급: normal(일반) / hidden(히든)
 // ─────────────────────────────────────────────────────────────
 
 export const PACKS: PackDef[] = [
   {
-    id: 'demo-pack',
-    name: '데모 부스터팩',
-    description: '카드 3장 구성. 마지막 장에서 히든 찬스.',
+    id: 'eunpyeong',
+    name: '전통의 은평구',
+    description: '은평구 카드 3장 구성.',
+    color: '#e07b2c', // 주황
     cardsPerPack: 3,
+    cardPool: ['eunpyeong-1', 'eunpyeong-2', 'eunpyeong-3'],
     slots: [
       { odds: { normal: 1 } },
       { odds: { normal: 1 } },
-      { odds: { normal: 0.9, hidden: 0.1 } },
+      { odds: { normal: 0.7, hidden: 0.3 } },
     ],
   },
   {
-    id: 'demo-premium',
-    name: '프리미엄 팩',
-    description: '히든 확률이 크게 올라간 3장 구성.',
+    id: 'gwanggyo',
+    name: '미래의 광교',
+    description: '광교 카드 3장 구성.',
+    color: '#3b7fd4', // 파랑
     cardsPerPack: 3,
+    cardPool: ['gwanggyo-1', 'gwanggyo-2', 'gwanggyo-3'],
     slots: [
       { odds: { normal: 1 } },
-      { odds: { normal: 0.65, hidden: 0.35 } },
-      { odds: { normal: 0.35, hidden: 0.65 } },
+      { odds: { normal: 1 } },
+      { odds: { normal: 0.7, hidden: 0.3 } },
     ],
   },
 ]
