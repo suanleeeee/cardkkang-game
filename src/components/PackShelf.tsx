@@ -1,6 +1,7 @@
 import { PACKS } from '../data/packs'
 import { useCollection } from '../state/collection'
 import type { PackDef } from '../game/types'
+import { SecretGate } from './SecretGate'
 
 interface Props {
   onOpen: (pack: PackDef) => void
@@ -21,14 +22,7 @@ export function PackShelf({ onOpen }: Props) {
   ]
 
   if (available.length === 0) {
-    return (
-      <div className="pack-empty">
-        <p>모든 팩을 열었어요</p>
-        <button className="btn" onClick={resetPacks} type="button">
-          다시 채우기
-        </button>
-      </div>
-    )
+    return <SecretGate onUnlock={resetPacks} />
   }
 
   return (

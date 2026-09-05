@@ -198,6 +198,7 @@ code {
   gap: 16px;
   width: 100%;
   max-width: 380px;
+  animation: fadeIn 0.4s ease;
 }
 
 .pack-gallery--single {
@@ -205,14 +206,21 @@ code {
   max-width: 200px;
 }
 
-.pack-empty {
-  margin: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-  color: var(--muted);
-  font-size: 0.95rem;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* 모든 팩을 연 뒤: 표시 없는 암전 화면 (17번 클릭 = 시크릿 코드) */
+.secret-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: #000;
 }
 
 .pack-tile {
