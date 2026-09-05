@@ -47,7 +47,8 @@ function load(): PersistShape {
     return {
       counts: parsed.counts ?? {},
       packsOpened: parsed.packsOpened ?? 0,
-      openedPacks: parsed.openedPacks ?? [],
+      // 새로고침(Ctrl+R)하면 항상 팩 2개인 초기 화면부터 시작한다.
+      openedPacks: [],
     }
   } catch {
     return empty
