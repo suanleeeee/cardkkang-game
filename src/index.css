@@ -190,7 +190,7 @@ code {
   );
 }
 
-/* ── 팩 갤러리 (초기 화면: 팩 2개만 가운데 정렬) ── */
+/* ── 팩 갤러리 (초기 화면: 팩만 가운데 정렬) ── */
 .pack-gallery {
   margin: auto;
   display: grid;
@@ -198,6 +198,21 @@ code {
   gap: 16px;
   width: 100%;
   max-width: 380px;
+}
+
+.pack-gallery--single {
+  grid-template-columns: 1fr;
+  max-width: 200px;
+}
+
+.pack-empty {
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  color: var(--muted);
+  font-size: 0.95rem;
 }
 
 .pack-tile {

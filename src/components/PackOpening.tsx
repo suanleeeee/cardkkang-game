@@ -13,7 +13,7 @@ interface Props {
 type Phase = 'sealed' | 'tearing' | 'revealing' | 'summary'
 
 export function PackOpening({ pack, onDone, onInspect }: Props) {
-  const { counts, addPull } = useCollection()
+  const { counts, addPull, markPackOpened } = useCollection()
 
   // 팩을 여는 순간의 보유 목록으로 결과를 고정한다.
   const ownedIdsRef = useRef<Set<string>>(
@@ -36,14 +36,15 @@ export function PackOpening({ pack, onDone, onInspect }: Props) {
   const startX = useRef<number | null>(null)
   const moved = useRef(false)
 
-  // 결과는 마운트 시 한 번만 컬렉션에 반영한다.
+  // 결과는 마운트 시 한 번만 컬렉션에 반영하고, 이 팩을 "뜯은 팩"으로 기록한다.
   const committed = useRef(false)
   useEffect(() => {
     if (!committed.current && cards.length > 0) {
       committed.current = true
       addPull(cards)
+      markPackOpened(pack.id)
     }
-  }, [cards, addPull])
+  }, [cards, addPull, markPackOpened, pack.id])
 
   // 봉투에서 카드가 나오는 연출 → 끝나면 공개 화면으로
   useEffect(() => {
