@@ -89,11 +89,6 @@ export interface CardDef {
   description?: string
 }
 
-/** 팩의 한 장(슬롯)에 대한 등급별 확률 가중치 */
-export interface RaritySlot {
-  odds: Partial<Record<Rarity, number>>
-}
-
 export interface PackDef {
   /** 고유 ID (예: "base-pack") */
   id: string
@@ -107,10 +102,11 @@ export interface PackDef {
   color?: string
   /** 한 팩에서 나오는 카드 수 */
   cardsPerPack: number
-  /** 이 팩에서 나올 수 있는 카드 ID 목록. 비우면 전체 카드 풀 사용 */
+  /**
+   * 이 팩에서 나올 카드 ID 목록 (정의된 순서대로, 중복 없이 뽑힘).
+   * 비우면 전체 카드 풀을 순서대로 사용.
+   */
   cardPool?: string[]
-  /** 슬롯별 등급 확률 테이블 */
-  slots: RaritySlot[]
 }
 
 /** 팩을 열어서 나온 카드 1장의 결과 */

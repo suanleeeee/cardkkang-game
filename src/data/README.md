@@ -51,28 +51,20 @@ export const CARDS: CardDef[] = [...baseSet]
 
 ## 3. 팩 추가 — `packs.ts`
 
-`slots` 는 "카드가 뽑히는 자리"마다의 등급 확률표입니다.
-가중치는 합이 1이 아니어도 되며 상대 비율로 계산됩니다.
-
 ```ts
 {
   id: 'eunpyeong',
   name: '전통의 은평구',
-  color: '#e07b2c',                       // 봉투·카드 뒷면 배경색 (hex)
+  short: '은평',                            // 카드 뒷면에 찍히는 짧은 이름
+  color: '#e07b2c',                        // 봉투·카드 뒷면 배경색 (hex)
   cardsPerPack: 3,
-  cardPool: ['eunpyeong-1', 'eunpyeong-2', 'eunpyeong-3'], // 이 팩에서만 나올 카드
-  slots: [
-    { odds: { normal: 1 } },
-    { odds: { normal: 1 } },
-    { odds: { normal: 0.7, hidden: 0.3 } }, // "히든 찬스" 슬롯
-  ],
+  cardPool: ['eunpyeong-1', 'eunpyeong-2', 'eunpyeong-3'],
 }
 ```
 
+- `cardPool`: 이 팩에서 나올 카드 ID 목록. **정의된 순서대로, 중복 없이** `cardsPerPack` 장까지 뽑힙니다. 생략 시 전체 카드 풀을 순서대로 사용.
 - `color`: 지정하면 봉투·카드 뒷면 그라데이션이 그 색으로 바뀝니다. 생략 시 금색.
-- `cardPool`: 세트별로 팩을 나누려면 해당 세트 카드 ID만 넣습니다. 생략 시 전체 카드.
-- `cardsPerPack` 이 `slots` 길이보다 크면 **마지막 슬롯 규칙을 반복**합니다.
-- 지정한 등급의 카드가 풀에 없으면 hidden → normal 순으로 대체합니다.
+- `short`: 카드 뒷면 라벨. 생략 시 `name`.
 - 개봉은 한 장씩 탭/스와이프로 넘기며 공개합니다.
 
 ## 4. 현재 데이터
