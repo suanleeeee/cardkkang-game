@@ -1,20 +1,20 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { openPack } from '../game/openPack'
-import type { CardDef, PackDef } from '../game/types'
+import type { PackDef } from '../game/types'
 import { useCollection } from '../state/collection'
 import { CardView } from './CardView'
 
 interface Props {
   pack: PackDef
+  /** 개봉이 끝나 홈으로 돌아갈 때 (일반 팩) */
   onDone: () => void
-  onInspect: (card: CardDef) => void
   /** 암전으로 개봉을 끝낼 때 (instant 팩) */
   onBlackout: () => void
 }
 
-type Phase = 'sealed' | 'tearing' | 'revealing' | 'summary'
+type Phase = 'sealed' | 'tearing' | 'revealing'
 
-export function PackOpening({ pack, onDone, onInspect, onBlackout }: Props) {
+export function PackOpening({ pack, onDone, onBlackout }: Props) {
   const { counts, addPull, markPackOpened } = useCollection()
 
   // 팩을 여는 순간의 보유 목록으로 결과를 고정한다.
@@ -75,7 +75,7 @@ export function PackOpening({ pack, onDone, onInspect, onBlackout }: Props) {
     if (!curRevealed || exiting) return
     if (isLast) {
       if (pack.instant) onBlackout()
-      else setPhase('summary')
+      else onDone() // 요약 없이 바로 홈(다음 팩)으로
       return
     }
     setExiting(true)
@@ -227,40 +227,12 @@ export function PackOpening({ pack, onDone, onInspect, onBlackout }: Props) {
             : isLast
               ? pack.instant
                 ? '탭해서 마무리'
-                : '탭해서 결과 보기'
+                : '탭해서 마치기'
               : '탭 또는 스와이프로 다음 카드'}
         </div>
       </div>
     )
   }
 
-  // phase === 'summary'
-  return (
-    <div className="opening" style={openingStyle}>
-      <div className="summary">
-        <h3>획득한 카드</h3>
-        <div
-          className={
-            'summary__cards' +
-            (cards.length === 1 ? ' summary__cards--one' : '')
-          }
-        >
-          {cards.map((pulled, i) => (
-            <div className="summary__card" key={i}>
-              <CardView
-                card={pulled.card}
-                isNew={pulled.isNew}
-                onClick={() => onInspect(pulled.card)}
-              />
-            </div>
-          ))}
-        </div>
-        <div className="opening__actions">
-          <button className="btn btn--primary" onClick={onDone} type="button">
-            보관하고 계속
-          </button>
-        </div>
-      </div>
-    </div>
-  )
+  return null
 }

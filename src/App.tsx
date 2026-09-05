@@ -1,12 +1,10 @@
 import { useState } from 'react'
 import { PackShelf } from './components/PackShelf'
 import { PackOpening } from './components/PackOpening'
-import { CardDetail } from './components/CardDetail'
-import type { CardDef, PackDef } from './game/types'
+import type { PackDef } from './game/types'
 
 export default function App() {
   const [opening, setOpening] = useState<PackDef | null>(null)
-  const [detail, setDetail] = useState<CardDef | null>(null)
   const [blackout, setBlackout] = useState(false)
 
   function runBlackout() {
@@ -23,7 +21,6 @@ export default function App() {
           <PackOpening
             pack={opening}
             onDone={() => setOpening(null)}
-            onInspect={setDetail}
             onBlackout={runBlackout}
           />
         ) : (
@@ -31,7 +28,6 @@ export default function App() {
         )}
       </main>
 
-      {detail && <CardDetail card={detail} onClose={() => setDetail(null)} />}
       {blackout && <div className="blackout" aria-hidden />}
     </div>
   )
