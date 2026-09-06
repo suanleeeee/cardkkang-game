@@ -14,3 +14,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+
+# reference clips (not part of the app)
+연출.mp4
+_ref*.mp4

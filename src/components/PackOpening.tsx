@@ -10,11 +10,13 @@ interface Props {
   onDone: () => void
   /** 암전으로 개봉을 끝낼 때 (instant 팩) */
   onBlackout: () => void
+  /** 팩을 뜯을 때 화면 하얗게 번쩍 */
+  onWhiteout: () => void
 }
 
 type Phase = 'sealed' | 'tearing' | 'revealing'
 
-export function PackOpening({ pack, onDone, onBlackout }: Props) {
+export function PackOpening({ pack, onDone, onBlackout, onWhiteout }: Props) {
   const { counts, addPull, markPackOpened } = useCollection()
 
   // 팩을 여는 순간의 보유 목록으로 결과를 고정한다.
@@ -38,6 +40,8 @@ export function PackOpening({ pack, onDone, onBlackout }: Props) {
   const [fromTear, setFromTear] = useState(false)
   const startX = useRef<number | null>(null)
   const moved = useRef(false)
+  // 이 화면이 뜬 시각 — 갤러리 탭이 방금 뜬 대기화면으로 흘러넘치는 것 방지용
+  const mountedAt = useRef(Date.now())
 
   // 결과는 마운트 시 한 번만 컬렉션에 반영하고, 이 팩을 "뜯은 팩"으로 기록한다.
   const committed = useRef(false)
@@ -49,15 +53,23 @@ export function PackOpening({ pack, onDone, onBlackout }: Props) {
     }
   }, [cards, addPull, markPackOpened, pack.id])
 
-  // 봉투에서 카드가 나오는 연출 → 끝나면 공개 화면으로
+  // 팩을 뜯으면: 화면이 하얗게 번쩍 하는 사이 공개 화면으로 전환 → 카드 등장
   useEffect(() => {
     if (phase !== 'tearing') return
     const t = window.setTimeout(() => {
       setFromTear(true)
       setPhase('revealing')
-    }, 730)
+    }, 470)
     return () => window.clearTimeout(t)
   }, [phase])
+
+  function startTear() {
+    if (phase !== 'sealed') return
+    // 갤러리 탭이 방금 뜬 대기화면으로 흘러넘치면 무시 (대기화면이 확실히 보이도록)
+    if (Date.now() - mountedAt.current < 350) return
+    onWhiteout()
+    setPhase('tearing')
+  }
 
   const isLast = idx >= cards.length - 1
   const curRevealed = revealed[idx] ?? false
@@ -148,7 +160,7 @@ export function PackOpening({ pack, onDone, onBlackout }: Props) {
           </div>
           <button
             className="tear__pack"
-            onClick={() => !tearing && setPhase('tearing')}
+            onClick={startTear}
             type="button"
             aria-label="카드팩 뜯기"
             disabled={tearing}
