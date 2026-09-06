@@ -15,10 +15,11 @@ export default function App() {
     window.setTimeout(() => setBlackout(false), 1300)
   }
 
-  // 흰 번쩍이 화면을 덮은 사이에 화면을 교체한다 (약 2초)
+  // 흰 번쩍이 화면을 덮은 사이에 화면을 교체한다 (약 2초).
+  // 교체는 흰색이 꽉 찬 후반부에, 페이드아웃은 짧게 → 다음 화면에 흰색이 안 남는다.
   function whiteTransition(swap: () => void) {
     setWhiteout(true)
-    window.setTimeout(swap, 850)
+    window.setTimeout(swap, 1700)
     window.setTimeout(() => setWhiteout(false), 2000)
   }
 
