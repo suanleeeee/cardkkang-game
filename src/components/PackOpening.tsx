@@ -6,17 +6,15 @@ import { CardView } from './CardView'
 
 interface Props {
   pack: PackDef
-  /** 개봉이 끝나 홈으로 돌아갈 때 (일반 팩) */
+  /** 개봉이 끝나 홈으로 돌아갈 때 (일반 팩) — 흰 번쩍 후 다음 팩으로 */
   onDone: () => void
   /** 암전으로 개봉을 끝낼 때 (instant 팩) */
   onBlackout: () => void
-  /** 팩을 뜯을 때 화면 하얗게 번쩍 */
-  onWhiteout: () => void
 }
 
 type Phase = 'sealed' | 'tearing' | 'revealing'
 
-export function PackOpening({ pack, onDone, onBlackout, onWhiteout }: Props) {
+export function PackOpening({ pack, onDone, onBlackout }: Props) {
   const { counts, addPull, markPackOpened } = useCollection()
 
   // 팩을 여는 순간의 보유 목록으로 결과를 고정한다.
@@ -53,21 +51,20 @@ export function PackOpening({ pack, onDone, onBlackout, onWhiteout }: Props) {
     }
   }, [cards, addPull, markPackOpened, pack.id])
 
-  // 팩을 뜯으면: 화면이 하얗게 번쩍 하는 사이 공개 화면으로 전환 → 카드 등장
+  // 팩을 뜯으면: 팩이 잠깐 떨린 뒤 카드가 등장
   useEffect(() => {
     if (phase !== 'tearing') return
     const t = window.setTimeout(() => {
       setFromTear(true)
       setPhase('revealing')
-    }, 470)
+    }, 360)
     return () => window.clearTimeout(t)
   }, [phase])
 
   function startTear() {
     if (phase !== 'sealed') return
-    // 갤러리 탭이 방금 뜬 대기화면으로 흘러넘치면 무시 (대기화면이 확실히 보이도록)
-    if (Date.now() - mountedAt.current < 350) return
-    onWhiteout()
+    // 화면이 방금 떴을 때 흘러넘친 탭은 무시 (대기화면이 확실히 보이도록)
+    if (Date.now() - mountedAt.current < 300) return
     setPhase('tearing')
   }
 

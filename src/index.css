@@ -469,7 +469,7 @@ code {
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
-/* 봉투를 뜯을 때: 팩이 잠깐 부르르 떨리고, 곧바로 하얀 번쩍(.whiteout)이 덮는다 */
+/* 팩을 뜯을 때: 팩이 잠깐 부르르 떨린다 */
 .tear--active .tear__pack {
   animation: tearShake 0.34s ease-in-out;
   pointer-events: none;
@@ -494,27 +494,27 @@ code {
   }
 }
 
-/* 화면이 하얗게 번쩍 (팩 뜯기 → 카드 등장 사이) */
+/* 화면이 하얗게 번쩍 — 팩 전환 사이 (갤러리→팩, 팩 완료→다음 팩), 약 2초 */
 .whiteout {
   position: fixed;
   inset: 0;
   z-index: 150;
   background: #fff;
   pointer-events: all;
-  animation: whiteoutFlash 0.95s ease forwards;
+  animation: whiteoutFlash 2s ease forwards;
 }
 
 @keyframes whiteoutFlash {
   0% {
     opacity: 0;
   }
-  20% {
+  16% {
     opacity: 0;
   }
-  44% {
+  38% {
     opacity: 1;
   }
-  56% {
+  62% {
     opacity: 1;
   }
   100% {
