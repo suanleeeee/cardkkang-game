@@ -18,3 +18,7 @@ pnpm-debug.log*
 # reference clips (not part of the app)
 연출.mp4
 _ref*.mp4
+
+# 시범 녹화 결과물
+*.mp4
+*.webm
