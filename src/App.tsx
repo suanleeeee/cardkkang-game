@@ -1,12 +1,16 @@
 import { useState } from 'react'
 import { PackShelf } from './components/PackShelf'
 import { PackOpening } from './components/PackOpening'
+import { PACKS } from './data/packs'
+import { useCollection } from './state/collection'
 import type { PackDef } from './game/types'
 
 export default function App() {
+  const { openedPacks } = useCollection()
   const [opening, setOpening] = useState<PackDef | null>(null)
   const [blackout, setBlackout] = useState(false)
   const [whiteout, setWhiteout] = useState(false)
+  const [bossReveal, setBossReveal] = useState(false)
 
   function runBlackout() {
     setBlackout(true)
@@ -29,9 +33,21 @@ export default function App() {
     else whiteTransition(() => setOpening(pack))
   }
 
-  // 카드 다 깐 뒤 → 흰 번쩍 → 홈(다음 팩)
+  // 카드 다 깐 뒤 → 홈으로. 이번에 히든 팩이 풀리는 순간이면 암전 + 연기 연출
   function finishPack() {
-    whiteTransition(() => setOpening(null))
+    const hiddenPack = PACKS.find((p) => p.hidden)
+    const revealsHidden =
+      !!hiddenPack &&
+      !openedPacks.has(hiddenPack.id) &&
+      PACKS.filter((p) => !p.hidden).every((p) => openedPacks.has(p.id))
+
+    if (revealsHidden) {
+      setBossReveal(true)
+      window.setTimeout(() => setOpening(null), 750)
+      window.setTimeout(() => setBossReveal(false), 2400)
+    } else {
+      setOpening(null)
+    }
   }
 
   return (
@@ -50,6 +66,12 @@ export default function App() {
 
       {blackout && <div className="blackout" aria-hidden />}
       {whiteout && <div className="whiteout" aria-hidden />}
+      {bossReveal && (
+        <div className="boss-reveal" aria-hidden>
+          <span className="boss-reveal__smoke" />
+          <span className="boss-reveal__smoke boss-reveal__smoke--2" />
+        </div>
+      )}
     </div>
   )
 }

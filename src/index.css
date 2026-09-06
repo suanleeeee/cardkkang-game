@@ -749,6 +749,66 @@ code {
   }
 }
 
+/* ── 히든 보스 등장: 암전 + 연기 (약 2.4초) ── */
+.boss-reveal {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: #05040a;
+  pointer-events: all;
+  overflow: hidden;
+  animation: bossRevealSeq 2.4s ease forwards;
+}
+
+.boss-reveal__smoke {
+  position: absolute;
+  inset: -30%;
+  pointer-events: none;
+  background:
+    radial-gradient(closest-side, rgba(120, 110, 140, 0.55), transparent 70%) 12%
+      20% / 55% 50% no-repeat,
+    radial-gradient(closest-side, rgba(90, 84, 110, 0.5), transparent 70%) 78% 45% /
+      60% 55% no-repeat,
+    radial-gradient(closest-side, rgba(150, 140, 170, 0.4), transparent 70%) 40%
+      88% / 75% 45% no-repeat;
+  filter: blur(26px);
+  animation: smokeDrift 5s ease-in-out infinite alternate;
+}
+
+.boss-reveal__smoke--2 {
+  background:
+    radial-gradient(closest-side, rgba(100, 92, 120, 0.5), transparent 70%) 65% 15% /
+      62% 48% no-repeat,
+    radial-gradient(closest-side, rgba(130, 120, 150, 0.42), transparent 70%) 20%
+      60% / 70% 60% no-repeat;
+  filter: blur(34px);
+  animation: smokeDrift 7s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes bossRevealSeq {
+  0% {
+    opacity: 0;
+  }
+  18% {
+    opacity: 1;
+  }
+  74% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes smokeDrift {
+  from {
+    transform: translate(-9%, 4%) scale(1);
+  }
+  to {
+    transform: translate(9%, -6%) scale(1.18);
+  }
+}
+
 /* ── 상세 시트 ─────────────────────────── */
 .sheet {
   position: fixed;
