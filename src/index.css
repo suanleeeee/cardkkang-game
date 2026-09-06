@@ -559,18 +559,12 @@ code {
   position: relative;
   width: var(--open-card-w);
   margin: 0 auto;
-  touch-action: pan-y;
 }
 
 .deck__card {
   position: relative;
   z-index: 1;
   transition: transform 0.2s ease, opacity 0.2s ease;
-  cursor: grab;
-  touch-action: pan-y;
-}
-
-.deck__card.is-exiting {
   pointer-events: none;
 }
 
@@ -641,7 +635,6 @@ code {
 .flipper {
   aspect-ratio: 63 / 88;
   perspective: 1000px;
-  cursor: pointer;
 }
 
 .flipper__inner {
