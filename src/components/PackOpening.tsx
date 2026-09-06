@@ -16,7 +16,7 @@ type Phase = 'sealed' | 'tearing' | 'revealing'
 
 // 카드팩을 연 뒤 자동 진행 타이밍
 const FLIP_DELAY = 500 // 카드가 뒤집히기까지 0.5초
-const VIEW_DURATION = 5000 // 뒤집힌 카드 내용을 보여주는 5초
+const VIEW_DURATION = 3000 // 뒤집힌 카드 내용을 보여주는 3초
 
 export function PackOpening({ pack, onDone, onBlackout }: Props) {
   const { counts, addPull, markPackOpened } = useCollection()
