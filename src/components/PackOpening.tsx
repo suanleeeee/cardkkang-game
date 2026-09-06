@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { openPack } from '../game/openPack'
+import { DEMO, DEMO_SEALED_PAUSE } from '../game/demo'
 import type { PackDef } from '../game/types'
 import { useCollection } from '../state/collection'
 import { CardView } from './CardView'
@@ -74,6 +75,13 @@ export function PackOpening({ pack, onDone, onBlackout }: Props) {
     if (Date.now() - mountedAt.current < 300) return
     setPhase('tearing')
   }
+
+  // 시범 모드: 대기화면을 잠깐 보여준 뒤 자동으로 뜯는다
+  useEffect(() => {
+    if (!DEMO || phase !== 'sealed') return
+    const t = window.setTimeout(() => setPhase('tearing'), DEMO_SEALED_PAUSE)
+    return () => window.clearTimeout(t)
+  }, [phase])
 
   const isLast = idx >= cards.length - 1
 
