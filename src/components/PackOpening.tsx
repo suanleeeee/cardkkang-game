@@ -85,7 +85,7 @@ export function PackOpening({ pack, onDone, onBlackout }: Props) {
 
   const isLast = idx >= cards.length - 1
 
-  // 공개 화면: 1초 뒤 자동으로 뒤집고, 5초 더 보여준 뒤 다음 카드로 (또는 마무리)
+  // 공개 화면: FLIP_DELAY 뒤 자동으로 뒤집고, VIEW_DURATION 더 보여준 뒤 다음 카드로 (또는 마무리)
   useEffect(() => {
     if (phase !== 'revealing') return
     setRevealed(false)
